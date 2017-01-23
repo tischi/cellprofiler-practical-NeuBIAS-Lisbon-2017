@@ -29,14 +29,20 @@
 - Click on the **NamesAndTypes** module; this module allows you to assign a name to each image by which other modules will refer to it. Chose to assign a name to all images,  select the image type **Color image**, and assign the name **raw_data** to all images. Click **[Update]** at the bottom of the table to list the selected files.
 - At the bottom left of the CellProfiler interface, click **[View output settings]**. In the panel to the right, adjust the **Default Output Folder**, e.g. create a new folder called **results** on the Desktop. 
 
-### Saving your CellProfiler pipeline
+### Save your CellProfiler pipeline
 
 - All necessary input and output modules are now set. Before continuing, click **[File]** at the top menu, and **[Save Project]**. Save the project in your output folder; in this way you will know what results were created with what pipeline. 
 
 ## Start building a pipeline
 Now it is time to start building the analysis pipeline. In order to identify the individual cells, start by identifying the cell nuclei. But before doing so we need to split the image into its different color channels.
--	To split the image channels, right-click into the **Analysis modules panel** and add the module **ColorToGray** (located under **Image Processing**). Select **raw_data** as your input image, and chose to split the rgb color channels. You do not have any information in the green channel, so you can set **No** here. Call the red image **PLA**, and the blue image **DNA**.
-- To identify the cell nuclei, add   **Object Processing > IdentifyPrimaryObjects**.
+
+### Split the color image using ColorToGray-	To split the image channels, right-click into the **Analysis modules panel** and **Add** the module **ColorToGray** (located under **Image Processing**). 
+- Select **raw_data** as your input image.
+- Chose to **Split** the **RBG** color channels.
+	- You do not have any information in the green channel, so you can set **No** here. 
+	- Call the red image **PLA**, and the blue image **DNA**.
+### Identify nuclei using IdentifyPrimaryObjectsMost cell segmentation projects start by finding the nuclei as they are typically well separate and relatively easy to detect.
+- **Add > Object Processing > IdentifyPrimaryObjects**.
 	- Select the input image: **DNA**.
 	- Name the primary objects to be identified: **Nuclei**
 	- The remaining settings need to be adjusted to best detect the nuclei, using CellProfiler's **Test Mode** (see below).
@@ -48,14 +54,14 @@ CellProfilers Test mode is a super useful feature that will allow you to see the
 - Go to the **Test** item in the menu bar at the top of the CellProfiler interface and select **Start test run** (or use the corresponding button in the bottom left). You will see a pointer and **"** icons appear next to the modules in the pipeline. Click **[Step]** below the pipeline panel to progress through each module in the pipeline, one by one.
 - Make sure that the **Eyes** next to the module names are openend to see the output of each module (you can click on them to close them).
 
-## Resume building and optimizing you pipeline 
+## Resume building and optimizing your pipeline 
 
 ### Adjust nuclei detection using IdentifyPrimaryObjects
 - **[Step]** through the pipeline to **IdentifyPrimaryObjects** and examine the results using the zooming tool in the top menu of the module output window. Using the default settings, you will realize that the nuclei are split into very many small parts (this is called over-segmentation). The module assumes that individual nuclei can be separated based on variations in signal intensity. In this dataset, there is a lot of variation in the intensity also within the nuclei. Using the numbering at the edge of the image, you will realize that these cells have a diameter greater than the default setting. 
 - Change the setting **Typical diameter** to **30 to 80**, and keep the automatic foreground/background threshold. 
 - Further, set **Method to distinguish clumped objects: Shape**. - Now, look at the result clicking **[Step]** again.As you will realize it is difficult to get a perfect segmentation of all cells. It is however important to remember that a few small errors will have a small impact on the end result if you use a non-biased automated approach and analyze many cells, as compared to analyzing few cells manually. If you want to, you can try the other options. Use the **[?]** next to the settings to learn what they mean. When you have confirmed, by eye, that the settings result in reasonable segmentation of most of the nuclei, the next step is to define an approximate cytoplasm of each cell. 
 
-### Detection of the cytoplasm using IdentifySecondaryObjects- Add **Object Processing > IdentifySecondaryObjects**
+### Detection of the cytoplasm using IdentifySecondaryObjects- **Add > Object Processing > IdentifySecondaryObjects**
 - **Select the input image: PLA** 
 	- We will use this as a guide to see how large the cytoplasms are.
 - **Select input objects setting: Nuclei**
@@ -68,33 +74,61 @@ By default, secondary objects are identified with the Propagation method, which 
 
 ### Detection of the PLA dots using IdentifyPrimaryObjects
 Next, find the PLA dots using the same module as for finding the nuclei, but with other settings.
--	Add **Object Processing > IdentifyPrimaryObjects**
-- Chose PLA as input
-- Name the primary objects to be identified setting, enter PLA_dots as a descriptive name.
-- Run using Step to see what happens when using the default settings. 
-- Now, adjust the Typical diameter to 2-8 pixels. 
+-	**Add > Object Processing > IdentifyPrimaryObjects**
+- Chose **PLA** as input
+- Name the primary objects to be identified **PLA_dots** 
+- Run the module using **[Step]** to see what happens when using the default settings. 
+- Now, adjust the **Typical diameter** to **2-8 pixels**. 
 
 For the PLA dots we know that some images may lack dots, and we will therefore use a fixed intensity threshold, or else background noise may be detected as true signals.
 
-- Set Threshold strategy to Manual, and 0.05.
-- Run using Step, and visually confirm the result.
+- Set **Threshold strategy** to **Manual**, and chose **0.05** as a threshold.
+	- You can later do an [additional task](#additional task:-adjust-spot-detection-threshold-using-negative controls) in order to learn how to decide on the 0.05 threshold in a scientific manner 
+- **[Step]**, and visually confirm the result.
 
 ### Count the number of PLA dots per cell using RelateObjects
-- Add RelateObjects (located under Object Processing).
-- Select PLA_dots as the child objects, 
-- and Cells as the parent objects. 
 
-This module will automatically count the number of child objects (PLA signals) per parent object (Cell). For now, were not extracting any other measurements (such as signal intensity), so the other settings can be left at the default settings.### Saving of segmentation results for later visual inspectionIt is often useful to save the result of segmentation and measurements as an image to visually confirm the analysis (especially when the number of images is relatively small; this is not suitable for high-throughput experiments).
- - Click on the   button and add the module OverlayOutlines from the module category Image Processing. Display outlines on the raw_data image, and add outlines from objects Cells, Nuclei, and PLA_dots using add another outline. Use the default OrigOverlay as output name. Run using Step.
-- Click on the   button and add the module SaveImages from the module category FileProcessing. Select OrigOverlay as the image to save, and From image filename as method for constructing file name, and use the filename for raw_data. Also check the box to append a suffix, name this suffix _result. This means that your result images will have the same name as the input images, but with the suffix _result. Use file format png. Other settings can be left at their default values. 
-### Saving of numeric results using ExportToSpreadsheet- Click on the   button and add the module ExportToSpreadsheet from the module category File Processing. 
-- Chose a suitable filename, chose tab as delimiter, and click on Yes for select the measurements to export. Export Cells/Children/count of children (click arrow to expand categories) and Image Filename. Click OK. Also check that you want to save means and standard deviations of per image object measurements. These will simplify later plotting. Note that the ExportToSpreadsheet will only work after exiting test mode. Save your project before proceeding.
-### Run your pipelineNow it is time to finally run you pipeline on all images!
-- **[Exit test mode]**- Select the Window item from the menu bar and select Hide all windows on run, and click the Analyze images button in the lower right corner of the CellProfiler interface.
+- **Add > Object Processing > RelateObjects**.
+- Select **PLA_dots** as the **child** objects, 
+- Select **Cells** as the **parent** objects. 
+
+This module will automatically count the number of child objects (PLA signals) per parent object (Cell). For now, were not extracting any other measurements (such as signal intensity), so the other settings can be left at the default settings.### Creating overlay images showing the segmentation resultsIt is very important to save the result of segmentations and measurements as an image to visually confirm the analysis! As a first step we will create a new image where we overlay the segmentation results on the raw data.
+- **Add > Image Processing > OverlayOutlines**
+- Display outlines on the **raw_data** image.  
+- Use the default **OrigOverlay** as output name. 
+- Add outlines from objects **Cells**, **Nuclei**, and **PLA_dots** using **Add another outline**. 
+- **[Step]** to check what it is doing
+- Adjust the outline colors to your liking
+
+### Saving of overlay images
+
+Now that we created the overlay image we need to save it to disk!
+- **Add > FileProcessing > SaveImages** 
+- Select **OrigOverlay** as the image to save 
+- Select **From image filename** as method for constructing file name, and use **raw_data** to provide the image name.
+- Also check the box to **Append a suffix**, name this suffix **_overlay**.
+	- This means that your result images will have the same name as the input images, but with the suffix **_result**. 
+- Use file format **png**. 
+- Select **Yes** for **Overwrite existing files without warning?**
+	- Otherwise each time you run the pipeline again you have to manually confirm for each image that it can be overwritten (lots of work if you have 1000 images ;).
+- Other settings can be left at their default values. 
+- Execute using **[Step]**
+	- Inspect you results folder using **Finder** or **Windows Explorer**: the image should have appeared! 	
+### Saving of numeric results using ExportToSpreadsheet- **Add > File Processing > ExportToSpreadsheet** - Chose **Tab** as delimiter.	- Comma delimited files are more likely to be interpreted wrongly, e.g. by Excel.- Click on **Yes** for **Select the measurements to export**	- Select **Cells/Children/PLA/dots/count** 
+		- click arrow to expand categories
+	- Also select **Image/Filename/raw/data**.	- Click OK.
+- Also check that you want to **Calculate per-image means (and standard deviations) for object measurements** as these will simplify later plotting.
+- Note that the ExportToSpreadsheet will only work after exiting test mode.
+- Save your project before proceeding.
+### Run your pipelineNow it is time to finally run your pipeline on all images!
+- **[Exit test mode]**- Select the **Window** item from the menu bar and select **Hide all windows on run**
+	- Otherwise you will be flooded by output images.
+- Click [Analyze Images] (next to the **[Start Test Mode]** button).
 
 ### Examine the numeric output using ExcelThe pipeline will now analyze all the images and create several output files. Open this file named Something_Cells.csv in Excel or similar. The file contains image number, object number (object being cell), and Children_PLA_dots_Count, which corresponds to the total number of PLA signals per cell. Rather than using this detailed information, open the file called Something_Image.csv. If using Swedish Excel also click Advanced to specify that . marks the decimal point. Now, create a bar-chart with errors based on means and standard deviations. 
 Questions:1.	Is there a significant difference in dots per cell in cells expressing wild-type and mutant Notch3?2.	How can we improve the experiment to better answer this question? 3.	In the current choice of antibody concentrations, do we know that we have saturated the system, or would it be meaningful to try higher concentrations?4.	What would you judge is the largest source of error in this experiment?
-### Additional task: Local background subtraction
+### Additional task: Adjust spot detection threshold using negative controls
+### Additional task: Local background subtraction
 In some experiments you may have a lot of background signal in your PLA images. Such background can be reduced by pre-processing the PLA image by a filter that enhances blob-like structures. Go back to your CellProfiler pipeline, and
 - add a module called EnhanceOrSupressFeatures found under Image Processing. 	- This module should be added right before the second IdentifyPrimaryObjects where you find the PLA signals.
 - Select the PLA image as your input image, and call the output FilteredPLA.
