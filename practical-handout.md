@@ -16,11 +16,21 @@
 3. count the number of PLA signals per cell and output this information to a spreadsheet. 
 ## Methods 
 You will use the free and open source CellProfiler software to identify and delineate (segment) each nucleus and cell body, and count the number of PLA signals per cell. You will set up a CellProfiler pipeline consisting of a number of modules; each module performs a unique image-processing step, and multiple modules can be arranged such that they are executed in sequential order. You will test your pipeline on a few images so that you can optimize the settings. Once optimization is complete, you will run the pipeline on all the images in the experiment, collect measurements from each cell and store the measurements in a spreadsheet. You will thereafter open the spreadsheet in Excel or another program of your choice.## Getting started: 
-- Download [CellProfiler](www.cellprofiler.org) and install the program on your computer (if it is not already installed). NB: Mac-users should check out their laptop version, CellProfiler 2.2 (Stable) works only for Mac OS 10.10+. Windows-users should check out their laptop version as well since Java x86 will have to be install for Windows x32 and Java x64 for Windows x64 (sometimes not the one recommended by the Java website).-	Go to [this](http://www.cb.uu.se/~carolina/CellProfiler/) page, download **PLA_data.zip**, and unzip the folder.- You can also download the data from [here](
+### Installation of CellProfiler
+- Download [CellProfiler](www.cellprofiler.org) and install the program on your computer (if it is not already installed).
+	- Mac-users should check out their OS version, CellProfiler 2.2 (Stable) works only for Mac OS 10.10+.
+	- Windows-users should check out their Java environment: Java x86 will have to be install for Windows x32 and Java x64 for Windows x64 (sometimes not the one recommended by the Java website); please follow the instruction on the CellProfiler download page.
+	
+### Download the data	-	Go to [this](http://www.cb.uu.se/~carolina/CellProfiler/) page, download **PLA_data.zip**, and unzip the folder.	- Alternatively, you can also download the data from [here](https://github.com/tischi/cellprofiler-practical-NeuBIAS-Lisbon-2017/archive/master.zip).
+	
+### Configure CellProfiler to load the data
 - Start CellProfiler.
 - In the CellProfiler interface, you will see the File list panel, a blank panel indicated by the text “Drop files and folders here”. From File Explorer (Windows) or Finder (Mac), drag and drop the folder of sample images named **data_PLA** into this panel. The filenames in the folder should now appear in the panel. You can take a look at the images by double-clicking on the name in the file list (close afterwards).
 - Click on the **NamesAndTypes** module; this module allows you to assign a name to each image by which other modules will refer to it. Chose to assign a name to all images,  select the image type **Color image**, and assign the name **raw_data** to all images. Click **[Update]** at the bottom of the table to list the selected files.
 - At the bottom left of the CellProfiler interface, click **[View output settings]**. In the panel to the right, adjust the **Default Output Folder**, e.g. create a new folder called **results** on the Desktop. 
+
+### Saving your CellProfiler pipeline
+
 - All necessary input and output modules are now set. Before continuing, click **[File]** at the top menu, and **[Save Project]**. Save the project in your output folder; in this way you will know what results were created with what pipeline. 
 
 ## Start building a pipeline
