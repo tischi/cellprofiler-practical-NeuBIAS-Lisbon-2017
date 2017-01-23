@@ -1,7 +1,10 @@
 # CellProfiler Practical:<br/> Counting of in situ PLA signals per cell### Authors- Carolina Wählby and Maxime Bombrun, Centre for Image Analysis, Uppsala University
 - Christian Tischer, Advanced Light Microscopy Facility, EMBL Heidelberg
 ## Background information
-In this experiment, we are working with cells (HEK293) growing in a multi-well plate. The cells have either wild-type of mutant Notch3, detected using in situ PLA, resulting in red dots. The amount of antibody for the PLA assay has been varied to confirm saturation (that is, to ensure we maximize Notch detection and that the detection rate is not limited by low antibody concentration). The aim of the experiment is to: 1.	Compare the number of dots per cell in cells expressing wild-type and mutant Notch3. 2.	Measure how the number of dots per cell varies with varying amounts of primary antibody (1EA).Well | Sample---|---1 | HEK293 WT 1E4 (0.04 mg/mL)
+In this experiment, we are working with cells (HEK293) growing in a multi-well plate. The cells have either wild-type of mutant Notch3, detected using in situ PLA, resulting in red dots. The amount of antibody for the PLA assay has been varied to confirm saturation (that is, to ensure we maximize Notch detection and that the detection rate is not limited by low antibody concentration). 
+The aim of the experiment is to: 
+1.	Compare the number of dots per cell in cells expressing wild-type and mutant Notch3. 2.	Measure how the number of dots per cell varies with varying amounts of primary antibody (1EA).
+The data that we will analyze is the following:Well | Sample---|---1 | HEK293 WT 1E4 (0.04 mg/mL)
 2 | HEK293 WT 1E4 (0.004 mg/mL) 
 3 | HEK293 WT 1E4 (0.0004 mg/mL) 
 4 | HEK293 WT No antibody5 | HEK293 + Notch3 FL (stable) 1E4 (0.04 mg/mL)
