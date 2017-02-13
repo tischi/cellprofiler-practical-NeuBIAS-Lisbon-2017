@@ -25,7 +25,7 @@
 	
 ### Configure CellProfiler to load the data
 - Start CellProfiler.
-- In the CellProfiler interface, you will see the File list panel, a blank panel indicated by the text “Drop files and folders here”. From File Explorer (Windows) or Finder (Mac), drag and drop the folder of sample images named **data_PLA** into this panel. The filenames in the folder should now appear in the panel. You can take a look at the images by double-clicking on the name in the file list (close afterwards).
+- In the CellProfiler interface, you will see the File list panel, a blank panel indicated by the text “Drop files and folders here”. Right-click in this window to browse for your sample images in the folder named **data_PLA** (in Windows and Mac you can drag and drop the folder of sample images into this panel). The filenames in the folder should now appear in the panel. You can take a look at the images by double-clicking on the name in the file list (close afterwards).
 - Click on the **NamesAndTypes** module; this module allows you to assign a name to each image by which other modules will refer to it. Chose to assign a name to all images,  select the image type **Color image**, and assign the name **raw_data** to all images. Click **[Update]** at the bottom of the table to list the selected files.
 - At the bottom left of the CellProfiler interface, click **[View output settings]**. In the panel to the right, adjust the **Default Output Folder**, e.g. create a new folder called **results** on the Desktop. 
 
@@ -63,7 +63,7 @@ CellProfilers Test mode is a super useful feature that will allow you to see the
 
 ### Adjust nuclei segmentation
 
-**[Step]** through the pipeline to **IdentifyPrimaryObjects** and examine the results using the zooming tool in the top menu of the module output window. Using the default settings, you will realize that the nuclei are split into very many small parts (this is called over-segmentation). The module assumes that individual nuclei can be separated based on variations in signal intensity. In this dataset, there is a lot of variation in the intensity also within the nuclei. Using the numbering at the edge of the image, you will realize that these cells have a diameter greater than the default setting. 
+**[Step]** through the pipeline to **IdentifyPrimaryObjects** and examine the results (if on Mac or Windows you may use the zooming tool in the top menu of the module output window). Using the default settings, you will realize that the nuclei are split into very many small parts (this is called over-segmentation). The module assumes that individual nuclei can be separated based on variations in signal intensity. In this dataset, there is a lot of variation in the intensity also within the nuclei. Using the numbering at the edge of the image, you will realize that these cells have a diameter greater than the default setting. 
 
 - Change the **Typical diameter** setting to **30 to 80**
 - Keep the automatic foreground/background threshold. 
